@@ -10,6 +10,7 @@ import CommentVO from "../vo/CommentVO";
 import Page from "../pojo/Page";
 import PostsDTO from "../dto/PostsDTO";
 import CommentsDTO from "../dto/CommentsDTO";
+import PostSearchDTO from "../dto/PostSearchDTO";
 
 export const enum ContentFragmentType {
     TEXT = 1,
@@ -131,6 +132,33 @@ class PostService {
         return new CommentsDTO(commentsVo, page)
     }
 
+    public searchPosts(queryParams: RP.SearchPostQueryParams): PostSearchDTO {
+        const keyword = queryParams.keyword.trim().toLowerCase()
+        if (!keyword) return new PostSearchDTO([])
+
+        const pageSize = Math.max(1, Math.floor(queryParams.rn))
+        const posts = this.postDao.getAllMainPostsByFloorAsc()
+        const results: VO.PostSearchResult[] = []
+
+        posts.forEach((post, index) => {
+            const user = this.userService.getUserInfo(post.user_id)!
+            const contentFragments = JSON.parse(post.contents) as Entity.ContentFragment[]
+            const hit = this.__findPostSearchHit(contentFragments, user, post.sign, keyword)
+            if (!hit) return
+
+            results.push({
+                post_id: post.id,
+                floor: post.floor,
+                page: Math.floor(index / pageSize) + 1,
+                user,
+                hit_field: hit.field,
+                hit_text: hit.text,
+            })
+        })
+
+        return new PostSearchDTO(results)
+    }
+
     private __commentVOFactory(post: Entity.Post): CommentVO {
         const user = this.userService.getUserInfo(post.user_id)!
         const replyToUser = post.reply_to_id ? this.userService.getUserInfo(post.reply_to_id) : undefined
@@ -180,12 +208,53 @@ class PostService {
         return parsedContents
     }
 
-    public searchPosts(): undefined {
+    private __findPostSearchHit(
+        contentFragments: Entity.ContentFragment[],
+        user: VO.User,
+        postSign: string,
+        keyword: string
+    ): { field: string, text: string } | undefined {
+        for (const fragment of contentFragments) {
+            const hit = this.__getContentFragmentSearchHit(fragment, keyword)
+            if (hit) return hit
+        }
 
-        // TODO
-        // 还有传入  ， post 的 pagesize， 和 comment的 pageszie 
-        // 返回  ppn, floor, pid,  
-        // cpn, cid,
+        const usernameHit = this.__getTextSearchHit('用户名', user.username, keyword)
+        if (usernameHit) return usernameHit
+
+        const nicknameHit = this.__getTextSearchHit('昵称', user.nickname, keyword)
+        if (nicknameHit) return nicknameHit
+
+        return this.__getTextSearchHit('小尾巴', postSign, keyword)
+    }
+
+    private __getContentFragmentSearchHit(
+        fragment: Entity.ContentFragment,
+        keyword: string
+    ): { field: string, text: string } | undefined {
+        switch (fragment.type) {
+            case ContentFragmentType.TEXT:
+                return this.__getTextSearchHit('正文', (fragment as Entity.FragText).text, keyword)
+            case ContentFragmentType.AT:
+                return this.__getTextSearchHit('@', (fragment as Entity.FragAt).text, keyword)
+            case ContentFragmentType.LINK:
+                return this.__getTextSearchHit('链接标题', (fragment as Entity.FragLink).title, keyword)
+            case ContentFragmentType.TIEBA_PLUS:
+                return this.__getTextSearchHit('贴吧Plus', (fragment as Entity.FragTiebaPlus).text, keyword)
+            default:
+                return
+        }
+    }
+
+    private __getTextSearchHit(
+        field: string,
+        text: string | null | undefined,
+        keyword: string
+    ): { field: string, text: string } | undefined {
+        if (!text) return
+        if (!text.toLowerCase().includes(keyword)) return
+
+        return { field, text }
     }
 }
 

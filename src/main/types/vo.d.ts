@@ -97,4 +97,13 @@ declare namespace VO {
     }
 
     type User = Omit<Entity.User, 'avatar'> & { avatar: string | undefined };
+
+    type PostSearchResult = {
+        post_id: number
+        floor: number
+        page: number
+        user: VO.User
+        hit_field: string
+        hit_text: string
+    }
 }

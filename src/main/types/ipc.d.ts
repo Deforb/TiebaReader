@@ -17,6 +17,11 @@ export interface IDataAPI {
         queryParams: RP.GetCommentsQueryParams
     ) => Promise<Result<DTO.Comments>>
 
+    searchPost: (
+        threadSource: RP.ThreadSource,
+        queryParams: RP.SearchPostQueryParams
+    ) => Promise<Result<DTO.PostSearch>>
+
     getUserInfo: (
         threadSource: RP.ThreadSource,
         id: number,

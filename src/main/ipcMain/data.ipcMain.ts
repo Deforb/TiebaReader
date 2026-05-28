@@ -8,6 +8,7 @@ import type ThreadService from '../services/ThreadService'
 import type PostService from '../services/PostService'
 import type PostsDTO from '../dto/PostsDTO'
 import type CommentsDTO from '../dto/CommentsDTO'
+import type PostSearchDTO from '../dto/PostSearchDTO'
 
 
 export default function dataIpcMain() {
@@ -104,14 +105,16 @@ export default function dataIpcMain() {
 
     ipcMain.handle('data:searchPost', (e: IpcMainInvokeEvent,
         threadSource: RP.ThreadSource,
-        keyword: string
-    ) => {
+        queryParams: RP.SearchPostQueryParams
+    ): Result<PostSearchDTO> => {
         let contentDB
         try {
             contentDB = new ContentDB(threadSource.path, threadSource.tid)
             rebindDataSourcesDeps(threadSource.path, threadSource.tid, contentDB)
 
-            // TODO 搜索
+            const postService = container.get<PostService>(InjectType.PostService)
+            const data = postService.searchPosts(queryParams)
+            return Result.ok(data)
         } catch (e: any) {
             return Result.error(e.message)
         } finally {

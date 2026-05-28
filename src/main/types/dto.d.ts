@@ -21,5 +21,9 @@ declare namespace DTO {
         page: Page
     }
 
+    type PostSearch = {
+        results: VO.PostSearchResult[]
+    }
+
     type User = VO.User
 }

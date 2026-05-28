@@ -60,6 +60,11 @@ class PostDao {
         return { results, totalCount }
     }
 
+    public getAllMainPostsByFloorAsc(): Entity.Post[] {
+        const sql = 'SELECT id, contents, floor, user_id, agree, disagree, create_time, is_thread_author, sign, reply_num, parent_id, reply_to_id FROM post WHERE parent_id = 0 ORDER BY floor ASC;'
+        return this.db.prepare<[], Entity.Post>(sql).all()
+    }
+
     /**
      * 获取楼主的帖子, Of用于区分通过xx来获取数据的By。
      */

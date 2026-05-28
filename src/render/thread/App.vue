@@ -35,7 +35,7 @@
                                    placeholder="Select"
                                    size="small"
                                    style="width: 90px"
-                                   @change="queryPosts">
+                                   @change="queryPosts()">
                             <el-option v-for="item in sortOptions"
                                        :key="item.value"
                                        :label="item.label"
@@ -45,12 +45,16 @@
                                    placeholder="Select"
                                    size="small"
                                    style="width: 90px"
-                                   @change="queryPosts">
+                                   @change="queryPosts()">
                             <el-option v-for="item in filterOptions"
                                        :key="item.value"
                                        :label="item.label"
                                        :value="item.value" />
                         </el-select>
+                        <el-button size="small"
+                                   @click="showSearchPostDialog = true">
+                            搜索
+                        </el-button>
                     </div>
                 </div>
             </div>
@@ -59,6 +63,7 @@
                 <div class="post-list">
                     <post v-for="post in posts"
                           :key="post.id"
+                          :data-post-id="post.id"
                           :post="post" />
                 </div>
                 <el-backtop :target="'.posts-wrap'"
@@ -76,18 +81,22 @@
                                :page-size="page.page_size"
                                layout="prev, pager, next, jumper, total"
                                :total="page.total_count"
-                               @current-change="queryPosts" />
+                               @current-change="queryPosts()" />
             </div>
         </div>
+        <search-post-dialog v-model="showSearchPostDialog"
+                            :page-size="page.page_size"
+                            @select="handleSelectSearchResult" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, provide, onMounted, reactive, onUnmounted, computed } from 'vue';
+import { ref, provide, onMounted, reactive, onUnmounted, computed, nextTick } from 'vue';
 import { formatTimestampToDateTimeString } from '@/utils/time';
 import { vLoading, ElBacktop, ElPagination, ElMessage, ElOverlay } from 'element-plus'
 import InitialValue from '@/constant/initial_value';
 import Sidebar from './views/Sidebar.vue';
+import SearchPostDialog from './views/SearchPostDialog.vue';
 import Post from '@/components/Post.vue';
 import TiebaTag from '../components/TiebaTag.vue';
 
@@ -136,9 +145,13 @@ provide('thread', thread)
 
 const posts = ref<VO.Post[]>([]);
 const page = reactive<Page>(InitialValue.getPage())
+const showSearchPostDialog = ref<boolean>(false)
 
+type PostJumpTarget = {
+    postId: number
+}
 
-const queryPosts = () => {
+const queryPosts = (jumpTarget?: PostJumpTarget) => {
     isRequestingPosts.value = true
     window.dataAPI.getPosts(threadSource, {
         pn: page.current_page,
@@ -153,11 +166,43 @@ const queryPosts = () => {
             return
         }
         posts.value = res.data.posts
-        setScrollPosition(0)
         Object.assign(page, res.data.page)
+
+        if (!jumpTarget) {
+            setScrollPosition(0)
+            return
+        }
+
+        nextTick(() => {
+            scrollToPost(jumpTarget.postId)
+        })
     }).finally(() => {
         isRequestingPosts.value = false
     })
+}
+
+const scrollToPost = function (postId: number) {
+    const scrollBar = scrollBarRef.value
+    if (!scrollBar) return
+
+    const postElement = scrollBar.querySelector<HTMLElement>(`[data-post-id="${postId}"]`)
+    if (!postElement) {
+        ElMessage.warning('已跳转到目标页，但未找到目标楼层')
+        return
+    }
+
+    scrollBar.scrollTo({
+        top: Math.max(postElement.offsetTop - 12, 0),
+        behavior: 'smooth',
+    })
+}
+
+const handleSelectSearchResult = function (result: VO.PostSearchResult) {
+    showSearchPostDialog.value = false
+    sortby.value = 0
+    filterby.value = 0
+    page.current_page = result.page
+    queryPosts({ postId: result.post_id })
 }
 
 const handleSwitchSidebarExpand = function () {

@@ -20,6 +20,11 @@ contextBridge.exposeInMainWorld('dataAPI', {
         queryParams: RP.GetCommentsQueryParams
     ) => ipcRenderer.invoke('data:getComments', threadSource, queryParams),
 
+    searchPost: (
+        threadSource: RP.ThreadSource,
+        queryParams: RP.SearchPostQueryParams
+    ) => ipcRenderer.invoke('data:searchPost', threadSource, queryParams),
+
     getUserInfo: (
         threadSource: RP.ThreadSource,
         id: number,

@@ -25,4 +25,9 @@ declare namespace RP {
         rn: number
         sort: number // 0:TIME_ASC, 1:AGREE,
     }
+
+    interface SearchPostQueryParams {
+        keyword: string
+        rn: number
+    }
 }
