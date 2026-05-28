@@ -34,9 +34,9 @@
                 <div class="post-info">
                     <span> 第 {{ post.floor }} 楼 </span>
                     <span>{{ formatTimestampToDateTimeString(post.create_time) }}</span>
-                    <span> <span class="iconfont">&#xe6cf;</span> {{ post.agree }} </span>
-                    <span> <span class="iconfont">&#xe6ce;</span> {{ post.disagree }} </span>
-                    <span> <span class="iconfont">&#xe602;</span> {{ post.reply_num }}</span>
+                    <span> <ui-icon name="thumbs-up" /> {{ post.agree }} </span>
+                    <span> <ui-icon name="thumbs-down" /> {{ post.disagree }} </span>
+                    <span> <ui-icon name="comment" /> {{ post.reply_num }}</span>
                     <span v-if="post.user.ip"> IP属地:{{ post.user.ip }} </span>
                 </div>
                 <div v-if="post.floor !== 1 && commentsPage.total_count">
@@ -97,6 +97,7 @@ import VoteContainer from '@/components/VoteContainer.vue';
 import ShareOrigin from '@/components/ShareOrigin.vue';
 import TiebaSign from '@/components/TiebaSign.vue';
 import Comment from '@/components/Comment.vue';
+import UiIcon from '@/components/UiIcon.vue';
 
 const isRequestingComments = ref<boolean>(false)
 const threadSource = readonly(inject<RP.ThreadSource>('threadSource')!)

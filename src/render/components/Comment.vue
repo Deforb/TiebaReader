@@ -25,8 +25,8 @@
                       :reply-to-user="comment.reply_to_user" />
             <div class="post-info">
                 <span>{{ formatTimestampToDateTimeString(comment.create_time) }}</span>
-                <span> <span class="iconfont">&#xe6cf;</span> {{ comment.agree }} </span>
-                <span> <span class="iconfont">&#xe6ce;</span> {{ comment.disagree }} </span>
+                <span> <ui-icon name="thumbs-up" /> {{ comment.agree }} </span>
+                <span> <ui-icon name="thumbs-down" /> {{ comment.disagree }} </span>
                 <span v-if="comment.user.ip"> IP属地:{{ comment.user.ip }} </span>
             </div>
         </div>
@@ -43,6 +43,7 @@ import Bawu from '@/components/Bawu.vue';
 import TiebaGlevel from '@/components/TiebaGlevel.vue'
 import TiebaLevel from '@/components/TiebaLevel.vue'
 import Contents from '@/components/Contents.vue';
+import UiIcon from '@/components/UiIcon.vue';
 
 const props = defineProps<{
     comment: VO.Comment

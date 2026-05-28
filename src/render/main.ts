@@ -5,6 +5,7 @@ import ElementPlus from 'element-plus'
 import '@/assets/css/reset.css'
 import '@/assets/css/common.css'
 import '@/assets/css/element-plus.css'
+import '@/assets/fonts/iconfont.js'
 
 import 'element-plus/dist/index.css'
 

@@ -9,7 +9,9 @@
                     :z-index="49"></el-overlay>
         <div class="collapse-thumb-track">
             <span @click="handleSwitchSidebarExpand"
-                  class="collapse-thumb iconfont"> &#xe653; </span>
+                  class="collapse-thumb">
+                <ui-icon name="collapse" :size="18" />
+            </span>
         </div>
         <div v-loading="isRequestingPosts"
              class="left-container">
@@ -20,9 +22,9 @@
                 <div class="thread-tail">
                     <div class="thread-meta">
                         <span>{{ formatTimestampToDateTimeString(thread.create_time) }}</span>
-                        <span> <span class="iconfont">&#xe69e;</span> {{ thread.view_num }}</span>
-                        <span> <span class="iconfont">&#xe602;</span> {{ thread.reply_num }}</span>
-                        <span> <span class="iconfont">&#xe622;</span> {{ thread.share_num }}</span>
+                        <span> <ui-icon name="view" /> {{ thread.view_num }}</span>
+                        <span> <ui-icon name="comment" /> {{ thread.reply_num }}</span>
+                        <span> <ui-icon name="share" /> {{ thread.share_num }}</span>
                         <div class="thread-tag">
                             <tieba-tag v-if="thread.is_help"
                                        text="求助帖" />
@@ -99,6 +101,7 @@ import Sidebar from './views/Sidebar.vue';
 import SearchPostDialog from './views/SearchPostDialog.vue';
 import Post from '@/components/Post.vue';
 import TiebaTag from '../components/TiebaTag.vue';
+import UiIcon from '@/components/UiIcon.vue';
 
 const isReceivingThreadSource = ref<boolean>(true)
 const isRequestingPosts = ref<boolean>(true)

@@ -7,6 +7,7 @@ import '@/assets/css/common.css'
 import '@/assets/css/element-plus.css'
 import '@/assets/css/components.css'
 import '@/assets/css/thread.css'
+import '@/assets/fonts/iconfont.js'
 import '@/assets/fonts/iconfont.css'
 
 import 'element-plus/dist/index.css'

@@ -2,10 +2,10 @@
     <div id="page">
         <div id="sidebar">
             <div class="sidebar-item" :class="{ active: activeTab === 'home' }" @click="activeTab = 'home'">
-                <span class="iconfont">&#xe8b9;</span> 首页
+                <ui-icon name="home" /> 首页
             </div>
             <div class="sidebar-item" :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">
-                <span class="iconfont">&#xe61d;</span> 设置
+                <ui-icon name="settings" /> 设置
             </div>
         </div>
         <div id="content">
@@ -47,6 +47,7 @@
 import { ref } from "vue";
 import FileDrop from "@/components/FileDrop.vue";
 import SettingsView from "@/components/SettingsView.vue";
+import UiIcon from "@/components/UiIcon.vue";
 import { openInBrowser } from "./api/electronApi";
 import { ElMessage } from "element-plus";
 
