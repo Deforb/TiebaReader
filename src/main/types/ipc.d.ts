@@ -59,6 +59,7 @@ export interface IAppAPI {
         callback: (e: IpcRendererEvent, threadSource: RP.ThreadSource,) => void
     ) => void
     getLastOpenedDataPath: () => Promise<string | undefined>
+    clearLastOpenedDataPath: () => Promise<void>
 }
 
 declare global {

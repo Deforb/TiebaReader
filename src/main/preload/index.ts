@@ -72,4 +72,5 @@ contextBridge.exposeInMainWorld('appAPI', {
         callback: (e: IpcRendererEvent, threadSource: RP.ThreadSource) => void
     ) => ipcRenderer.on('window:acceptThreadWindowParams', callback),
     getLastOpenedDataPath: () => ipcRenderer.invoke('app:getLastOpenedDataPath'),
+    clearLastOpenedDataPath: () => ipcRenderer.invoke('app:clearLastOpenedDataPath'),
 })

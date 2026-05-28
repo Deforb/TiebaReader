@@ -78,3 +78,10 @@ export const setLastOpenedDataPath = async (path: string): Promise<void> => {
     await writeConfig(config)
     console.log('[appConfig] setLastOpenedDataPath saved:', normalizedPath)
 }
+
+export const clearLastOpenedDataPath = async (): Promise<void> => {
+    const config = await readConfig()
+    delete config.lastOpenedDataPath
+    await writeConfig(config)
+    console.log('[appConfig] lastOpenedDataPath cleared')
+}

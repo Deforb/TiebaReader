@@ -1,29 +1,42 @@
 <template>
     <div id="page">
-        <div id="header">
-            <div class="nav"> </div>
-            <div class="nav">
-                <div class="nav-item">
-                    <a class="gb_I"
-                       @click.prevent="openInBrowser('https://github.com/Sorceresssis/TiebaReader')">
-                        Reader
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a class="gb_I"
-                       @click.prevent="openInBrowser('https://github.com/Sorceresssis/TiebaScraper')">
-                        Scraper
-                    </a>
-                </div>
+        <div id="sidebar">
+            <div class="sidebar-item" :class="{ active: activeTab === 'home' }" @click="activeTab = 'home'">
+                <span class="iconfont">&#xe8b9;</span> 首页
+            </div>
+            <div class="sidebar-item" :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">
+                <span class="iconfont">&#xe61d;</span> 设置
             </div>
         </div>
-        <div id="main">
-            <h1 id="logo">Tieba Reader</h1>
-            <div id="drag-dialog">
-                <file-drop type="dir"
-                           :multi="false"
-                           label="或"
-                           @open="handleFileDropOpen" />
+        <div id="content">
+            <div id="header">
+                <div class="nav"> </div>
+                <div class="nav">
+                    <div class="nav-item">
+                        <a class="gb_I"
+                           @click.prevent="openInBrowser('https://github.com/Sorceresssis/TiebaReader')">
+                            Reader
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="gb_I"
+                           @click.prevent="openInBrowser('https://github.com/Sorceresssis/TiebaScraper')">
+                            Scraper
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="main" v-show="activeTab === 'home'">
+                <h1 id="logo">Tieba Reader</h1>
+                <div id="drag-dialog">
+                    <file-drop type="dir"
+                               :multi="false"
+                               label="或"
+                               @open="handleFileDropOpen" />
+                </div>
+            </div>
+            <div id="main-settings" v-if="activeTab === 'settings'">
+                <SettingsView />
             </div>
         </div>
     </div>
@@ -31,9 +44,13 @@
 
 
 <script setup lang="ts">
+import { ref } from "vue";
 import FileDrop from "@/components/FileDrop.vue";
+import SettingsView from "@/components/SettingsView.vue";
 import { openInBrowser } from "./api/electronApi";
 import { ElMessage } from "element-plus";
+
+const activeTab = ref<'home' | 'settings'>('home')
 
 const handleFileDropOpen = async function (paths: string[]) {
     if (paths[0]) {
@@ -51,8 +68,47 @@ const handleFileDropOpen = async function (paths: string[]) {
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background-color: #F6F6F8;
+}
+
+#sidebar {
+    width: 200px;
+    background-color: #ECECEF;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    gap: 8px;
+    border-right: 1px solid #DFDFE3;
+}
+
+.sidebar-item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+}
+
+.sidebar-item:hover {
+    background-color: #E2E2E6;
+}
+
+.sidebar-item.active {
+    background-color: #D3D3D8;
+    font-weight: 500;
+}
+
+#content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 #header {
@@ -93,6 +149,15 @@ const handleFileDropOpen = async function (paths: string[]) {
     justify-content: center;
     align-items: center;
     flex-grow: 1;
+}
+
+#main-settings {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 60px;
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 #logo {

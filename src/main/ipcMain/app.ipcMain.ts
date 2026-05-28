@@ -5,7 +5,7 @@ import container, { rebindDataSourcesDeps } from '../container/container'
 import InjectType from '../container/inject_type'
 import scrapeDataSourceDirStruct from '../config/scrapeDataSourceDirStruct'
 import Result from '../pojo/Result'
-import { setLastOpenedDataPath } from '../config/appConfig'
+import { setLastOpenedDataPath, clearLastOpenedDataPath } from '../config/appConfig'
 import { getLastOpenedDataPath } from '../config/appConfig'
 import type ScrapeInfoService from '../services/ScrapeInfoService'
 
@@ -71,6 +71,14 @@ export default function appIpcMain() {
         } catch (err) {
             console.error('[appIpcMain] app:getLastOpenedDataPath error', err)
             return undefined
+        }
+    })
+
+    ipcMain.handle('app:clearLastOpenedDataPath', async (): Promise<void> => {
+        try {
+            await clearLastOpenedDataPath()
+        } catch (err) {
+            console.error('[appIpcMain] app:clearLastOpenedDataPath error', err)
         }
     })
 } 
