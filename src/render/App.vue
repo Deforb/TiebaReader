@@ -69,18 +69,18 @@ const handleFileDropOpen = async function (paths: string[]) {
     height: 100vh;
     display: flex;
     flex-direction: row;
-    background-color: #F6F6F8;
+    background-color: var(--bg-surface);
 }
 
 #sidebar {
     width: 200px;
-    background-color: #ECECEF;
+    background-color: var(--bg-color);
     display: flex;
     flex-direction: column;
     padding: 20px 10px;
     box-sizing: border-box;
     gap: 8px;
-    border-right: 1px solid #DFDFE3;
+    border-right: 1px solid var(--border-color);
 }
 
 .sidebar-item {
@@ -88,19 +88,20 @@ const handleFileDropOpen = async function (paths: string[]) {
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    color: #333;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: all 0.2s;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-item:hover {
-    background-color: #E2E2E6;
+    background-color: var(--bg-hover);
 }
 
 .sidebar-item.active {
-    background-color: #D3D3D8;
+    background-color: var(--bg-hover);
+    border: 1px solid var(--border-color);
     font-weight: 500;
 }
 
@@ -134,7 +135,7 @@ const handleFileDropOpen = async function (paths: string[]) {
     display: inline-block;
     line-height: 24px;
     vertical-align: middle;
-    color: rgba(0, 0, 0, .87);
+    color: var(--text-primary);
     font-size: 13px;
     cursor: pointer;
 }

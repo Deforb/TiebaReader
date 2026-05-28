@@ -110,8 +110,29 @@ section {
     display: none;
 }
 
+:root {
+    --bg-color: #ffffff;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+    --bg-surface: #f8fafc;
+    --bg-hover: #f1f5f9;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94A3B8;
+        --border-color: #2D3748;
+        --bg-surface: #1A202C;
+        --bg-hover: #2D3748;
+    }
+}
+
 body {
-    background-color: #fff;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
 }
 
 menu,
@@ -148,4 +169,20 @@ button {
     padding: 0;
     outline: none;
     background-color: transparent;
+}
+
+*:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

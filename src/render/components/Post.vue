@@ -174,7 +174,7 @@ onMounted(() => {
 
 .avatar-wrap {
     padding: 1px;
-    border: 1px solid #e1e1e1;
+    border: 1px solid var(--border-color);
 }
 
 .post .user-info {
@@ -187,7 +187,7 @@ onMounted(() => {
 
 .post:not(:last-child) .post-divider {
     height: 22px;
-    border-bottom: 1px solid #d6dee5;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .post-tail {
@@ -202,7 +202,7 @@ onMounted(() => {
     align-items: center;
     position: relative;
     font-size: 13px;
-    color: #9499A0;
+    color: var(--text-secondary);
     font-weight: 400;
     box-sizing: border-box;
 }
@@ -219,21 +219,30 @@ onMounted(() => {
     cursor: pointer;
     color: #1D53BF;
     user-select: none;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.comment-list-btn:hover {
+    color: #2563EB;
+    background-color: var(--bg-hover);
 }
 
 .comment-list {
     margin-top: 10px;
-    background-color: #F7F8FA;
+    background-color: var(--bg-surface);
+    border-radius: 6px;
 }
 
 .view-more-comments {
     margin-top: 6px;
     font-size: 13px;
-    color: #9499A0;
+    color: var(--text-secondary);
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 
 .view-more-comments:hover {
-    color: #008AC5;
+    color: #2563EB;
 }
 </style>

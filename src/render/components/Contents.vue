@@ -29,7 +29,7 @@ defineProps<{
     font-size: 14px;
     min-height: 1em;
     width: 100%;
-    color: #18191C;
+    color: var(--text-primary);
     overflow: hidden;
     word-wrap: break-word;
     word-break: break-word;

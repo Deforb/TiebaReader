@@ -36,12 +36,12 @@ defineProps<{
 .tieba-sign__label {
     margin: 0 20px;
     font-size: 13px;
-    color: #9499A0;
+    color: var(--text-secondary);
 }
 
 .tieba-sign__content {
     margin-top: 6px;
     font-size: 13px;
-    color: #18191C;
+    color: var(--text-primary);
 }
 </style>

@@ -65,7 +65,7 @@
 
 /* 分割线 */
 .divider:not(:last-child) {
-    border-bottom: 1px solid #d6dee5;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .float-left {

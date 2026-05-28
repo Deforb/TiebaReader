@@ -30,15 +30,14 @@ defineProps<{
 
 <style>
 .vote-container {
-    --vote-border-color: #DFDFDF;
     width: 100%;
     max-width: 500px;
     padding: 10px;
     margin: 10px 0;
     box-sizing: border-box;
-    background-color: #F7F7F9;
+    background-color: var(--bg-surface);
     border-radius: 5px;
-    border: 1px solid var(--vote-border-color);
+    border: 1px solid var(--border-color);
 }
 
 .vote-title {
@@ -56,15 +55,15 @@ defineProps<{
     display: flex;
     justify-content: space-between;
     padding: 5px 10px;
-    border: 1px solid var(--vote-border-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: #fff;
+    background-color: var(--bg-color);
 }
 
 .vote-tail {
     margin-top: 10px;
     font-size: 13px;
-    color: #888888;
+    color: var(--text-secondary);
     box-sizing: border-box;
 }
 </style>

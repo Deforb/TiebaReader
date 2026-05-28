@@ -54,8 +54,10 @@ onMounted(() => {
     width: 100%;
     padding: 20px;
     margin-bottom: 10px;
-    background-color: #F1F1F3;
+    background-color: var(--bg-hover);
     box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .share-origin_title_wrap {
@@ -64,10 +66,12 @@ onMounted(() => {
 
 .share-origin_title {
     cursor: pointer;
+    font-weight: 500;
 }
 
 .share-origin_title:hover {
     text-decoration: underline;
+    color: #2563EB;
 }
 
 .share-origin-user {
