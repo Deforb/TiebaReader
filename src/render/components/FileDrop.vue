@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElDivider, ElInput, ElButton, ElMessage } from 'element-plus';
 
 const props = withDefaults(defineProps<{
@@ -101,6 +101,17 @@ const handleOpenDialog = function () {
 }
 
 const dataDirPathInput = ref<string>('')
+
+onMounted(async () => {
+    try {
+        const p = await window.appAPI.getLastOpenedDataPath()
+        if (p) {
+            dataDirPathInput.value = p
+        }
+    } catch (err) {
+        console.warn('FileDrop: getLastOpenedDataPath failed', err)
+    }
+})
 
 const pathFormatter = function (value: string): string {
     // 把 '\','\\' 替换成 '/'

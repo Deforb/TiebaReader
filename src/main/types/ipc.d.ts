@@ -58,6 +58,7 @@ export interface IAppAPI {
     acceptThreadWindowParams: (
         callback: (e: IpcRendererEvent, threadSource: RP.ThreadSource,) => void
     ) => void
+    getLastOpenedDataPath: () => Promise<string | undefined>
 }
 
 declare global {

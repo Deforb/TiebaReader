@@ -1,4 +1,5 @@
 import { ipcMain, dialog, IpcMainInvokeEvent } from "electron"
+import { getLastOpenedDataDir } from '../config/appConfig'
 
 /*
 filters: [
@@ -32,7 +33,15 @@ export default function dialogIpcMain() {
         // 判断是否多选
         if (multiSelect) option.properties!.push('multiSelections')
         if (title) option.title = title
+        const lastOpenedDataDir = await getLastOpenedDataDir()
+        console.log('[dialogIpcMain] lastOpenedDataDir=', lastOpenedDataDir)
+        if (lastOpenedDataDir) {
+            option.defaultPath = lastOpenedDataDir
+            console.log('[dialogIpcMain] setting defaultPath for dialog:', lastOpenedDataDir)
+        }
+        console.log('[dialogIpcMain] showing open dialog with options:', option)
         const { filePaths } = await dialog.showOpenDialog(option)
+        console.log('[dialogIpcMain] dialog returned filePaths:', filePaths)
         return filePaths
     })
 }

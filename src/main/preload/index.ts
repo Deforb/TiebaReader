@@ -71,4 +71,5 @@ contextBridge.exposeInMainWorld('appAPI', {
     acceptThreadWindowParams: (
         callback: (e: IpcRendererEvent, threadSource: RP.ThreadSource) => void
     ) => ipcRenderer.on('window:acceptThreadWindowParams', callback),
+    getLastOpenedDataPath: () => ipcRenderer.invoke('app:getLastOpenedDataPath'),
 })
